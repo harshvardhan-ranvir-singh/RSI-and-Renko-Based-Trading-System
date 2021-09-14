@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Backtesting</title>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    </head>
+    <body>
+      <nav>
+        <div class="nav-wrapper" style= "background:#337ab7">
+          <a href="/" class="brand-logo center">Backtesting</a>
+
+
+          </div>
+      </nav>
+      <div class="container">
+
+          <form method="post" action>
+              {% csrf_token %}
+              <div class="form-row">
+                <div class="col-md-4 mb-3">
+                  <label for="exchange">Exchange</label>
+                  <input type="text" class="form-control is-valid" id="exchange" name="exchange" list = "exchangeoperations" placeholder="Enter ExchangeCode"  required>
+                  <datalist id="exchangeoperations">
+                     <option value="NSE_EQ">
+                     <option value="NSE_FO">
+                     <option value="NSE_INDEX">
+                     <option value="BSE_EQ">
+                     <option value="BCD_FO">
+                     <option value="BSE_INDEX">
+                     <option value="MCX_INDEX">
+                     <option value="MCX_FO">
+                   </datalist>
+                  <div class="valid-feedback">
+                    Looks good!
+                  </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="contract">Contract</label>
+                  <input type="text" class="form-control is-valid" id="contract" list = "contractoperations" name="contract" placeholder="Enter Contract" required>
+                  <datalist id="contractoperations">
+                     <option value="TATASTEEL">
+                     <option value="RELIANCE">
+                     <option value="TATAMOTORS19SEPFUT">
+                     <option value="CRUDEOIL19SEPFUT">
+                   </datalist>
+                  <div class="valid-feedback">
+                    Looks good!
+                  </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="timeframe">Time Frame</label>
+                  <input type="text" class="form-control is-valid" id="timeframe" name="timeframe" list="timeoperations" placeholder="Time Frame" required>
+                   <datalist id="timeoperations">
+                     <option value="1MINUTE">
+                     <option value="5MINUTE">
+                     <option value="10MINUTE">
+                     <option value="30MINUTE">
+                     <option value="60MINUTE">
+                     <option value="1DAY">
+                     <option value="1WEEK">
+                     <option value="1MONTH">
+                   </datalist>
+                  <div class="valid-feedback">
+                    Looks good!
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="col-md-6 mb-3">
+                  <label for="filter">Date Filter</label>
+                  <input type="text" class="form-control is-invalid" id="filter" name="filter" placeholder="DD-MM-YYYY DD-MM-YYYY" required>
+                  <div class="invalid-feedback">
+                    Please provide Dates with Space, eg: 20-01-2017  01-02-2017
+                  </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label for="bricksize">Brick Size</label>
+                  <input type="number" class="form-control is-invalid" id="bricksize" name="bricksize" placeholder="Brick Size">
+                  <div class="invalid-feedback">
+                    Please provide a brick size.
+                  </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label for="brickreversal">Brick Reversal</label>
+                  <input type="number" class="form-control is-invalid" id="brickreversal" name="brickreversal" placeholder="Brick Reversal" required>
+                  <div class="invalid-feedback">
+                    Please provide a brick reversal.
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="col-md-6 mb-3">
+                  <label for="pivotprice">Pivot Price</label>
+                  <input type="number" class="form-control is-invalid" id="pivotprice" name="pivotprice" placeholder="Enter PivotPrice">
+                  <div class="invalid-feedback">
+                    Please provide Pivot Price.
+                  </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label for="bricksizepercentage">Brick Size Percentage</label>
+                  <input type="number" class="form-control is-invalid" id="bricksizepercentage" name="bricksizepercentage" placeholder="Brick Size Percentage">
+                  <div class="invalid-feedback">
+                    Please provide a brick size percentage.
+                  </div>
+                </div>
+
+              </div>
+              <!--<div class="form-group">
+                <div class="form-check">
+                  <input class="form-check-input is-invalid" type="checkbox" value="" id="invalidCheck3" required>
+                  <label class="form-check-label" for="invalidCheck3">
+                    Agree to terms and conditions
+                  </label>
+                  <div class="invalid-feedback">
+                    You must agree before submitting.
+                  </div>
+                </div>
+              </div>-->
+              <button class="btn btn-primary" type="submit">Start Backtest</button>
+        </form>
+
+             <h2 style="margin-top: 50px; margin-bottom: 50px;"><kbd>{{ sent }}</kbd></h2>
+             <h2 style="margin-top: 50px;">OHLC</h2>
+
+             <p>Get OHLC values for all instruments across various timeframes. Historical data can be fetched for the following durations.</p>
+             <table class="table table-striped">
+                  <thead>
+                      <tr>
+                        <th>Candles</th>
+                        <th>Duration</th>
+                      </tr>
+                   </thead>
+                   <tbody>
+                       <tr>
+                        <td>1 Minute</td>
+                        <td>Last 30 days</td>
+                       </tr>
+                       <tr>
+                        <td>5 Minute</td>
+                        <td>Last 120 days</td>
+                       </tr>
+                       <tr>
+                        <td>10 Minute</td>
+                        <td>Last 180 days</td>
+                       </tr>
+                       <tr>
+                        <td>30 Minute</td>
+                        <td>Last 240 days</td>
+                       </tr>
+                       <tr>
+                        <td>60 Minute</td>
+                        <td>Last 240 days</td>
+                       </tr>
+                       <tr>
+                        <td>1 DAY</td>
+                        <td>Since 2005</td>
+                       </tr>
+                       <tr>
+                        <td>1 Week</td>
+                        <td>Since 2005</td>
+                       </tr>
+                       <tr>
+                        <td>1 Month</td>
+                        <td>Since 2005</td>
+                       </tr>
+                  </tbody>
+             </table>
+
+      </div>
+
+
+    </body>
+</html>
